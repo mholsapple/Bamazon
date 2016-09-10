@@ -14,6 +14,8 @@ connection.connect(function(err) {
     console.log("connected as id " + connection.threadId);
 })
 
+//sets the default value to 0
+
 var sumTotal = 0;
 
 //RUN A FUNCTION THAT WILL DISPLAY ALL THE ITEMS FOR SALE
@@ -55,7 +57,8 @@ var salesTransaction = function() {
             }
         }
     }]).then(function(answer) {
-    
+
+        //makes the connection to know where to select from and to find out how many items are in stock
         connection.query('SELECT * FROM products', function(err, res) {
             if (err) throw err;
             //This is going to check the quantity available and check it based on the user's input
@@ -67,6 +70,7 @@ var salesTransaction = function() {
 
             var quantityRequested = parseFloat(answer.quantity);
 
+            //checking to see if the current quantity in stock has enough to fulfil the request the user inputted. If it does, run the function. Otherwise, tell them Insufficient Quantity.
             if (currentQuantity >= quantityRequested){
                 //console.log("Enough in stock")
 
@@ -79,13 +83,10 @@ var salesTransaction = function() {
                 }, {
                     ItemID: answer.itemId
                 }], function(err, res) {
-                    console.log("Total cost of cart: $" + sumTotal + \n) 
+                    console.log("Total cost of cart: $" + sumTotal + " \n") 
 
                     runFunction(sumTotal);
                 })
-
-
-
 
 
             }else{
